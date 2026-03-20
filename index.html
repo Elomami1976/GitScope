@@ -1601,7 +1601,7 @@
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <div class="logo">
+            <div class="logo" id="logoBtn" style="cursor: pointer;">
                 <div class="logo-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0f" stroke-width="2">
                         <circle cx="12" cy="12" r="10"/>
@@ -3357,6 +3357,13 @@
 
             // Event Handlers
             function setupEventHandlers() {
+                // Logo click - return to home
+                $('#logoBtn').addEventListener('click', () => {
+                    elements.repoUrl.value = '';
+                    ui.showWelcome();
+                    window.history.pushState({}, '', window.location.pathname);
+                });
+                
                 // Form submit
                 elements.searchForm.addEventListener('submit', (e) => {
                     e.preventDefault();
