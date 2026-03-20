@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitScope — GitHub Repository Visualizer</title>
     <meta name="description" content="A browser-based GitHub repository visualizer. Explore file trees, commit history, contributors, and more.">
+    <meta name="theme-color" content="#0a0a0f" id="themeColor">
+    <meta name="color-scheme" content="dark light">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="48x48.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="180x180.png">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,6 +47,27 @@
             --error: #f87171;
             --font-heading: 'Syne', sans-serif;
             --font-mono: 'Space Mono', monospace;
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --accent: #7c9a00;
+            --bg: #f5f5f7;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e8e8ec;
+            --text: #1a1a2e;
+            --text-muted: #6b6b80;
+            --border: #d0d0d8;
+        }
+
+        [data-theme="light"] body {
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+        }
+
+        [data-theme="light"] .treemap-text {
+            fill: #1a1a2e;
         }
 
         html {
@@ -1173,6 +1205,136 @@
             background: var(--border);
             border-radius: 3px;
         }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text);
+            transition: transform 0.3s;
+        }
+
+        .theme-toggle:hover svg {
+            transform: rotate(15deg);
+        }
+
+        .theme-toggle .sun-icon {
+            display: none;
+        }
+
+        .theme-toggle .moon-icon {
+            display: block;
+        }
+
+        [data-theme="light"] .theme-toggle .sun-icon {
+            display: block;
+        }
+
+        [data-theme="light"] .theme-toggle .moon-icon {
+            display: none;
+        }
+
+        /* Keyboard Shortcuts Modal */
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.75rem 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .shortcut-key {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            color: var(--accent);
+        }
+
+        .shortcut-desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Export Dropdown */
+        .export-dropdown {
+            position: relative;
+        }
+
+        .export-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s;
+            z-index: 100;
+        }
+
+        .export-dropdown.open .export-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .export-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .export-menu-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .export-menu-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        .export-menu-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .export-menu-item svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+        }
     </style>
 </head>
 <body>
@@ -1206,6 +1368,31 @@
                     Analyze
                 </button>
             </form>
+            
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme (T)">
+                    <svg class="moon-icon" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                </button>
+                <button class="theme-toggle" id="shortcutsBtn" title="Keyboard shortcuts (?)">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                        <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M8 16h8"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -1288,14 +1475,49 @@
                         </svg>
                         Copy Link
                     </button>
-                    <button class="btn btn-secondary" id="exportPngBtn">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7,10 12,15 17,10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                        Export PNG
-                    </button>
+                    <div class="export-dropdown" id="exportDropdown">
+                        <button class="btn btn-secondary" id="exportBtn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7,10 12,15 17,10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            Export
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 4px;">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </button>
+                        <div class="export-menu">
+                            <button class="export-menu-item" id="exportPngBtn">
+                                <svg viewBox="0 0 24 24" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                                    <polyline points="21,15 16,10 5,21"/>
+                                </svg>
+                                Export PNG
+                            </button>
+                            <button class="export-menu-item" id="exportCsvBtn">
+                                <svg viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14,2 14,8 20,8"/>
+                                    <line x1="8" y1="13" x2="16" y2="13"/>
+                                    <line x1="8" y1="17" x2="16" y2="17"/>
+                                </svg>
+                                Export CSV
+                            </button>
+                            <button class="export-menu-item" id="exportJsonBtn">
+                                <svg viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14,2 14,8 20,8"/>
+                                    <path d="M8 13h2"/>
+                                    <path d="M8 17h2"/>
+                                    <path d="M14 13h2"/>
+                                    <path d="M14 17h2"/>
+                                </svg>
+                                Export JSON
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1434,6 +1656,7 @@
             <div class="footer-links">
                 <span class="footer-link" id="aboutLink">About</span>
                 <span class="footer-link" id="termsLink">Terms of Use</span>
+                <span class="footer-link" id="shortcutsLink">Shortcuts</span>
                 <a class="footer-link" href="https://github.com/Elomami1976/GitScope" target="_blank" rel="noopener">GitHub</a>
             </div>
             <div class="footer-copyright">
@@ -1557,6 +1780,44 @@
                     For questions about these terms, please open an issue on our 
                     <a href="https://github.com/Elomami1976/GitScope/issues" target="_blank" rel="noopener">GitHub repository</a>.
                 </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div class="modal-overlay" id="shortcutsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Keyboard Shortcuts</h2>
+                <button class="modal-close" data-close-modal>×</button>
+            </div>
+            <div class="modal-body">
+                <p>Use these keyboard shortcuts to navigate GitScope faster:</p>
+                <div class="shortcuts-grid">
+                    <span class="shortcut-key">/</span>
+                    <span class="shortcut-desc">Focus search input</span>
+                    
+                    <span class="shortcut-key">T</span>
+                    <span class="shortcut-desc">Toggle dark/light theme</span>
+                    
+                    <span class="shortcut-key">Esc</span>
+                    <span class="shortcut-desc">Close modals / Clear search</span>
+                    
+                    <span class="shortcut-key">?</span>
+                    <span class="shortcut-desc">Show this shortcuts panel</span>
+                    
+                    <span class="shortcut-key">G</span>
+                    <span class="shortcut-desc">Go to treemap view</span>
+                    
+                    <span class="shortcut-key">L</span>
+                    <span class="shortcut-desc">Go to table (list) view</span>
+                    
+                    <span class="shortcut-key">R</span>
+                    <span class="shortcut-desc">Reset treemap to root</span>
+                    
+                    <span class="shortcut-key">C</span>
+                    <span class="shortcut-desc">Copy shareable link</span>
+                </div>
             </div>
         </div>
     </div>
@@ -2822,6 +3083,137 @@
             // Start app
             init();
 
+            // Theme Management
+            const themeManager = {
+                init() {
+                    // Check for saved theme preference or system preference
+                    const savedTheme = localStorage.getItem('gitscope-theme');
+                    if (savedTheme) {
+                        this.setTheme(savedTheme);
+                    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                        this.setTheme('light');
+                    }
+
+                    // Listen for system theme changes
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                        if (!localStorage.getItem('gitscope-theme')) {
+                            this.setTheme(e.matches ? 'dark' : 'light');
+                        }
+                    });
+                },
+
+                setTheme(theme) {
+                    document.documentElement.setAttribute('data-theme', theme);
+                    localStorage.setItem('gitscope-theme', theme);
+                    
+                    // Update theme-color meta tag
+                    const metaTheme = document.getElementById('themeColor');
+                    if (metaTheme) {
+                        metaTheme.content = theme === 'light' ? '#f5f5f7' : '#0a0a0f';
+                    }
+                },
+
+                toggle() {
+                    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+                    this.setTheme(current === 'dark' ? 'light' : 'dark');
+                }
+            };
+
+            themeManager.init();
+
+            // Theme toggle button
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                themeManager.toggle();
+            });
+
+            // Export Functions
+            const exportFunctions = {
+                toCSV() {
+                    if (state.files.length === 0) {
+                        ui.showError('No data to export');
+                        return;
+                    }
+
+                    const headers = ['Filename', 'Path', 'Size (bytes)', 'Commits', 'Top Author', 'Last Modified', 'Type'];
+                    const rows = state.filteredFiles.map(f => [
+                        f.name,
+                        f.path,
+                        f.size,
+                        f.commits,
+                        f.topAuthor || 'Unknown',
+                        f.lastModified,
+                        f.type
+                    ]);
+
+                    const csvContent = [headers, ...rows]
+                        .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+                        .join('\n');
+
+                    this.download(csvContent, `gitscope-${state.owner}-${state.repo}.csv`, 'text/csv');
+                },
+
+                toJSON() {
+                    if (state.files.length === 0) {
+                        ui.showError('No data to export');
+                        return;
+                    }
+
+                    const data = {
+                        repository: {
+                            owner: state.owner,
+                            name: state.repo,
+                            description: state.repoData?.description,
+                            stars: state.repoData?.stargazers_count,
+                            forks: state.repoData?.forks_count,
+                            created: state.repoData?.created_at,
+                            defaultBranch: state.repoData?.default_branch
+                        },
+                        languages: state.languages,
+                        contributors: state.contributors,
+                        files: state.filteredFiles,
+                        exportedAt: new Date().toISOString()
+                    };
+
+                    const jsonContent = JSON.stringify(data, null, 2);
+                    this.download(jsonContent, `gitscope-${state.owner}-${state.repo}.json`, 'application/json');
+                },
+
+                download(content, filename, mimeType) {
+                    const blob = new Blob([content], { type: mimeType });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = filename;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                }
+            };
+
+            // Export dropdown
+            const exportDropdown = document.getElementById('exportDropdown');
+            const exportBtn = document.getElementById('exportBtn');
+
+            exportBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                exportDropdown.classList.toggle('open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!exportDropdown.contains(e.target)) {
+                    exportDropdown.classList.remove('open');
+                }
+            });
+
+            document.getElementById('exportCsvBtn').addEventListener('click', () => {
+                exportFunctions.toCSV();
+                exportDropdown.classList.remove('open');
+            });
+
+            document.getElementById('exportJsonBtn').addEventListener('click', () => {
+                exportFunctions.toJSON();
+                exportDropdown.classList.remove('open');
+            });
+
             // Modal handlers
             document.getElementById('aboutLink').addEventListener('click', () => {
                 document.getElementById('aboutModal').classList.add('visible');
@@ -2829,6 +3221,14 @@
 
             document.getElementById('termsLink').addEventListener('click', () => {
                 document.getElementById('termsModal').classList.add('visible');
+            });
+
+            document.getElementById('shortcutsBtn').addEventListener('click', () => {
+                document.getElementById('shortcutsModal').classList.add('visible');
+            });
+
+            document.getElementById('shortcutsLink').addEventListener('click', () => {
+                document.getElementById('shortcutsModal').classList.add('visible');
             });
 
             document.querySelectorAll('.modal-overlay').forEach(modal => {
@@ -2839,13 +3239,88 @@
                 });
             });
 
+            // Keyboard Shortcuts
             document.addEventListener('keydown', (e) => {
+                // Skip if typing in an input
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                    if (e.key === 'Escape') {
+                        e.target.blur();
+                        document.getElementById('searchFilter').value = '';
+                        filters.apply();
+                    }
+                    return;
+                }
+
+                // Close modals on Escape
                 if (e.key === 'Escape') {
                     document.querySelectorAll('.modal-overlay.visible').forEach(m => {
                         m.classList.remove('visible');
                     });
+                    exportDropdown.classList.remove('open');
+                    return;
+                }
+
+                // Focus search on /
+                if (e.key === '/') {
+                    e.preventDefault();
+                    document.getElementById('searchFilter').focus();
+                    return;
+                }
+
+                // Toggle theme on T
+                if (e.key === 't' || e.key === 'T') {
+                    themeManager.toggle();
+                    return;
+                }
+
+                // Show shortcuts on ?
+                if (e.key === '?') {
+                    document.getElementById('shortcutsModal').classList.add('visible');
+                    return;
+                }
+
+                // Treemap view on G
+                if (e.key === 'g' || e.key === 'G') {
+                    document.querySelector('.view-toggle-btn[data-view="treemap"]').click();
+                    return;
+                }
+
+                // Table/List view on L
+                if (e.key === 'l' || e.key === 'L') {
+                    document.querySelector('.view-toggle-btn[data-view="table"]').click();
+                    return;
+                }
+
+                // Reset treemap on R
+                if ((e.key === 'r' || e.key === 'R') && state.currentPath) {
+                    state.currentPath = '';
+                    treemap.updateBreadcrumb();
+                    treemap.render();
+                    return;
+                }
+
+                // Copy link on C
+                if (e.key === 'c' || e.key === 'C') {
+                    const copyBtn = document.getElementById('copyLinkBtn');
+                    if (copyBtn && state.repo) {
+                        copyBtn.click();
+                    }
+                    return;
                 }
             });
+
+            // Register Service Worker for PWA
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js')
+                        .then(registration => {
+                            console.log('GitScope SW registered:', registration.scope);
+                        })
+                        .catch(error => {
+                            console.log('GitScope SW registration failed:', error);
+                        });
+                });
+            }
         })();
     </script>
 </body>
