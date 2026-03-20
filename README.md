@@ -1,8 +1,11 @@
 # GitScope
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub Pages](https://img.shields.io/badge/demo-live-brightgreen)](https://elomami1976.github.io/GitScope/)
 
 > A browser-based GitHub repository visualizer. Explore file structures, commit history, contributors, and more — all without a backend.
+
+## 🚀 [Live Demo → https://elomami1976.github.io/GitScope/](https://elomami1976.github.io/GitScope/)
 
 ![GitScope Screenshot](screenshot.png)
 *Screenshot placeholder — replace with actual screenshot*
@@ -75,9 +78,9 @@ No backend, no authentication, no installation required.
 4. Click **Analyze**
 
 ### Option 2: GitHub Pages
-Visit the hosted version (if deployed) with a direct link:
+Visit the hosted version with a direct link:
 ```
-https://your-username.github.io/gitscope/?repo=owner/repo
+https://elomami1976.github.io/GitScope/?repo=owner/repo
 ```
 
 ### Option 3: Shareable Links
@@ -103,12 +106,12 @@ After analyzing a repo, click **Copy Link** to get a shareable URL that auto-loa
 
 8. Access your site at:
    ```
-   https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
+   https://elomami1976.github.io/GitScope/
    ```
 
 9. Share direct links to repos:
    ```
-   https://YOUR-USERNAME.github.io/gitscope/?repo=facebook/react
+   https://elomami1976.github.io/GitScope/?repo=facebook/react
    ```
 
 ---
