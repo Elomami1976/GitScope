@@ -1017,6 +1017,162 @@
             color: var(--text-muted);
             padding: 2rem;
         }
+
+        /* Footer */
+        .footer {
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .footer-copyright a {
+            color: var(--accent);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 15, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.visible .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-family: var(--font-heading);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-body h3 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+        }
+
+        .modal-body p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .modal-body ul {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .modal-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body a {
+            color: var(--accent);
+        }
+
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
@@ -1271,6 +1427,139 @@
             </div>
         </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <span class="footer-link" id="aboutLink">About</span>
+                <span class="footer-link" id="termsLink">Terms of Use</span>
+                <a class="footer-link" href="https://github.com/Elomami1976/GitScope" target="_blank" rel="noopener">GitHub</a>
+            </div>
+            <div class="footer-copyright">
+                © 2024 GitScope. Built with vanilla JS, <a href="https://d3js.org" target="_blank" rel="noopener">D3.js</a> & <a href="https://www.chartjs.org" target="_blank" rel="noopener">Chart.js</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- About Modal -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">About GitScope</h2>
+                <button class="modal-close" data-close-modal>×</button>
+            </div>
+            <div class="modal-body">
+                <h3>What is GitScope?</h3>
+                <p>
+                    GitScope is a browser-based GitHub repository visualizer that helps you explore and understand 
+                    any public repository's structure, contributors, and history — all without leaving your browser.
+                </p>
+                
+                <h3>Features</h3>
+                <ul>
+                    <li><strong>Interactive Treemap:</strong> Visualize file sizes and commit activity with drill-down navigation</li>
+                    <li><strong>Contributor Insights:</strong> See who contributes most and identify "bus factor" risks</li>
+                    <li><strong>File Intelligence:</strong> Find abandoned files, most changed files, and largest files</li>
+                    <li><strong>Language Breakdown:</strong> View repository language composition</li>
+                    <li><strong>Search & Filter:</strong> Filter by author, file type, or date range</li>
+                    <li><strong>Export:</strong> Save treemap as PNG or share via URL</li>
+                </ul>
+                
+                <h3>Technology</h3>
+                <p>
+                    GitScope is built entirely with vanilla JavaScript — no frameworks, no build steps. 
+                    It uses <a href="https://d3js.org" target="_blank" rel="noopener">D3.js</a> for treemap visualizations and 
+                    <a href="https://www.chartjs.org" target="_blank" rel="noopener">Chart.js</a> for charts.
+                </p>
+                
+                <h3>API Rate Limits</h3>
+                <p>
+                    GitScope uses the unauthenticated GitHub API, which allows 60 requests per hour. 
+                    Each repository analysis uses approximately 6-8 requests. For best results, use on small 
+                    to medium-sized repositories.
+                </p>
+                
+                <h3>Open Source</h3>
+                <p>
+                    GitScope is open source under the MIT License. View the source code and contribute at 
+                    <a href="https://github.com/Elomami1976/GitScope" target="_blank" rel="noopener">GitHub</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Terms of Use</h2>
+                <button class="modal-close" data-close-modal>×</button>
+            </div>
+            <div class="modal-body">
+                <h3>Acceptance of Terms</h3>
+                <p>
+                    By accessing and using GitScope, you accept and agree to be bound by these Terms of Use. 
+                    If you do not agree to these terms, please do not use this service.
+                </p>
+                
+                <h3>Description of Service</h3>
+                <p>
+                    GitScope is a free, browser-based tool that visualizes public GitHub repositories. 
+                    The service is provided "as is" without warranties of any kind.
+                </p>
+                
+                <h3>GitHub API Usage</h3>
+                <p>
+                    GitScope accesses data through the GitHub REST API. Your use of this tool is also subject to 
+                    <a href="https://docs.github.com/en/site-policy/github-terms/github-terms-of-service" target="_blank" rel="noopener">GitHub's Terms of Service</a>. 
+                    GitScope only accesses publicly available repository data.
+                </p>
+                
+                <h3>Data Collection</h3>
+                <p>
+                    GitScope does not collect, store, or transmit any personal data. All repository data is 
+                    fetched directly from GitHub's API to your browser and is not stored on any server.
+                </p>
+                
+                <h3>Rate Limiting</h3>
+                <p>
+                    The GitHub API has rate limits (60 requests/hour for unauthenticated requests). 
+                    GitScope is not responsible for any limitations imposed by GitHub's rate limiting.
+                </p>
+                
+                <h3>Disclaimer of Warranties</h3>
+                <p>
+                    GitScope is provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, 
+                    expressed or implied, regarding the accuracy, reliability, or availability of the service.
+                </p>
+                
+                <h3>Limitation of Liability</h3>
+                <p>
+                    In no event shall GitScope or its creators be liable for any indirect, incidental, 
+                    special, consequential, or punitive damages arising from your use of the service.
+                </p>
+                
+                <h3>Changes to Terms</h3>
+                <p>
+                    We reserve the right to modify these terms at any time. Continued use of GitScope 
+                    after changes constitutes acceptance of the modified terms.
+                </p>
+                
+                <h3>License</h3>
+                <p>
+                    GitScope is released under the MIT License. You are free to use, modify, and distribute 
+                    this software in accordance with the license terms.
+                </p>
+                
+                <h3>Contact</h3>
+                <p>
+                    For questions about these terms, please open an issue on our 
+                    <a href="https://github.com/Elomami1976/GitScope/issues" target="_blank" rel="noopener">GitHub repository</a>.
+                </p>
+            </div>
+        </div>
+    </div>
 
     <script>
         // GitScope Application
@@ -2532,6 +2821,31 @@
 
             // Start app
             init();
+
+            // Modal handlers
+            document.getElementById('aboutLink').addEventListener('click', () => {
+                document.getElementById('aboutModal').classList.add('visible');
+            });
+
+            document.getElementById('termsLink').addEventListener('click', () => {
+                document.getElementById('termsModal').classList.add('visible');
+            });
+
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal || e.target.hasAttribute('data-close-modal')) {
+                        modal.classList.remove('visible');
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal-overlay.visible').forEach(m => {
+                        m.classList.remove('visible');
+                    });
+                }
+            });
         })();
     </script>
 </body>
