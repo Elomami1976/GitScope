@@ -288,49 +288,106 @@
             display: block;
         }
 
-        /* Welcome Screen */
-        .welcome-screen {
+        /* Home Page */
+        .home-page {
+            padding: 0;
+        }
+
+        .home-page.hidden {
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 70vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 60vh;
             text-align: center;
-            gap: 1.5rem;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .welcome-screen.hidden {
-            display: none;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(232, 255, 71, 0.08) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
         }
 
-        .welcome-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            display: flex;
+        .hero-badge {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
             border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease-out;
         }
 
-        .welcome-icon svg {
-            width: 40px;
-            height: 40px;
+        .hero-badge svg {
+            width: 16px;
+            height: 16px;
             fill: var(--accent);
         }
 
-        .welcome-title {
-            font-size: 2rem;
-            color: var(--text);
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .welcome-subtitle {
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .hero-title .accent {
+            color: var(--accent);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
             color: var(--text-muted);
-            max-width: 500px;
+            max-width: 600px;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
-        .welcome-examples {
+        .hero-cta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+
+        .hero-cta-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .hero-examples {
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
@@ -338,19 +395,222 @@
         }
 
         .example-link {
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             background: var(--bg-secondary);
             border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
             color: var(--text-muted);
             cursor: pointer;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .example-link svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            opacity: 0.6;
         }
 
         .example-link:hover {
             border-color: var(--accent);
             color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 255, 71, 0.1);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* How It Works Section */
+        .how-section {
+            padding: 4rem 2rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .how-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .how-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .how-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            color: var(--bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin: 0 auto 1rem;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Tech Stack */
+        .tech-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .tech-badge {
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tech-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--text-muted);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 60vh;
+                padding: 3rem 1.5rem;
+            }
+            .hero-examples {
+                flex-direction: column;
+            }
+            .features-section, .how-section, .tech-section {
+                padding: 3rem 1.5rem;
+            }
         }
 
         /* Dashboard */
@@ -1414,23 +1674,157 @@
         <!-- Error Message -->
         <div class="error-message" id="errorMessage"></div>
 
-        <!-- Welcome Screen -->
-        <div class="welcome-screen" id="welcomeScreen">
-            <div class="welcome-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
-            </div>
-            <h1 class="welcome-title">Visualize any GitHub repository</h1>
-            <p class="welcome-subtitle">
-                Paste a public GitHub repo URL above to explore its file structure, contributors, commit history, and more.
-            </p>
-            <div class="welcome-examples">
-                <span class="example-link" data-repo="facebook/react">facebook/react</span>
-                <span class="example-link" data-repo="vuejs/vue">vuejs/vue</span>
-                <span class="example-link" data-repo="microsoft/vscode">microsoft/vscode</span>
-                <span class="example-link" data-repo="torvalds/linux">torvalds/linux</span>
-            </div>
+        <!-- Home Page -->
+        <div class="home-page" id="homePage">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Open Source • No Backend Required
+                </div>
+                <h1 class="hero-title">
+                    Visualize any<br><span class="accent">GitHub repository</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Explore file structures with interactive treemaps, analyze commit activity, 
+                    discover top contributors, and understand codebases at a glance.
+                </p>
+                <div class="hero-cta">
+                    <span class="hero-cta-text">Try with a popular repository:</span>
+                    <div class="hero-examples">
+                        <span class="example-link" data-repo="facebook/react">
+                            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            facebook/react
+                        </span>
+                        <span class="example-link" data-repo="microsoft/vscode">
+                            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            microsoft/vscode
+                        </span>
+                        <span class="example-link" data-repo="vuejs/vue">
+                            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            vuejs/vue
+                        </span>
+                        <span class="example-link" data-repo="torvalds/linux">
+                            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            torvalds/linux
+                        </span>
+                    </div>
+                </div>
+                <div class="scroll-indicator">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M19 12l-7 7-7-7"/>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <div class="section-header">
+                    <h2 class="section-title">Powerful visualization tools</h2>
+                    <p class="section-subtitle">Everything you need to understand a codebase</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        </div>
+                        <h3 class="feature-title">Interactive Treemap</h3>
+                        <p class="feature-desc">Visualize file structure with D3.js treemaps. Click to drill down into folders, see file sizes at a glance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                        </div>
+                        <h3 class="feature-title">Commit Activity</h3>
+                        <p class="feature-desc">See commit frequency over time with beautiful bar charts. Understand project momentum and development pace.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </div>
+                        <h3 class="feature-title">Language Breakdown</h3>
+                        <p class="feature-desc">Donut chart showing programming language distribution. Instantly see what technologies power the project.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3 class="feature-title">Top Contributors</h3>
+                        <p class="feature-desc">Discover who's building the project. See contributor avatars, commit counts, and profile links.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        </div>
+                        <h3 class="feature-title">Export Options</h3>
+                        <p class="feature-desc">Export treemap as PNG image, download file data as CSV or JSON for further analysis.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                        </div>
+                        <h3 class="feature-title">Dark & Light Themes</h3>
+                        <p class="feature-desc">Switch between themes with a click or press T. Follows your system preference by default.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works -->
+            <section class="how-section">
+                <div class="how-content">
+                    <div class="section-header">
+                        <h2 class="section-title">How it works</h2>
+                        <p class="section-subtitle">Three simple steps to explore any repository</p>
+                    </div>
+                    <div class="how-steps">
+                        <div class="how-step">
+                            <div class="step-number">1</div>
+                            <h3 class="step-title">Paste Repository URL</h3>
+                            <p class="step-desc">Enter any public GitHub repo URL in the search bar above</p>
+                        </div>
+                        <div class="how-step">
+                            <div class="step-number">2</div>
+                            <h3 class="step-title">Automatic Analysis</h3>
+                            <p class="step-desc">GitScope fetches file tree, commits, contributors via GitHub API</p>
+                        </div>
+                        <div class="how-step">
+                            <div class="step-number">3</div>
+                            <h3 class="step-title">Explore & Export</h3>
+                            <p class="step-desc">Interact with visualizations, drill down folders, export data</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tech Stack -->
+            <section class="tech-section">
+                <div class="section-header">
+                    <h2 class="section-title">Built with modern web tech</h2>
+                    <p class="section-subtitle">No backend, no frameworks — pure browser power</p>
+                </div>
+                <div class="tech-grid">
+                    <div class="tech-badge">
+                        <svg viewBox="0 0 24 24" fill="#f7df1e"><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.405-.585-.585-.765-.63-.63-1.47-.945-2.835-.9l-.69.089c-.66.164-1.29.51-1.65.96-.435.586-.54 1.32-.36 2.1.3 1.29 1.53 1.845 2.685 2.175 1.05.3 1.86.45 1.8.93-.045.624-.675.81-1.26.75-.78-.06-1.185-.48-1.59-1.14 0 0-1.035.585-1.755 1.005.24.54.615.915.945 1.155.78.576 1.83.855 3.24.75 1.17-.135 2.13-.6 2.7-1.485.57-.855.645-2.34.195-3.54z"/></svg>
+                        JavaScript
+                    </div>
+                    <div class="tech-badge">
+                        <svg viewBox="0 0 24 24" fill="#f76d47"><circle cx="12" cy="12" r="10"/></svg>
+                        D3.js
+                    </div>
+                    <div class="tech-badge">
+                        <svg viewBox="0 0 24 24" fill="#ff6384"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        Chart.js
+                    </div>
+                    <div class="tech-badge">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        GitHub API
+                    </div>
+                    <div class="tech-badge">
+                        <svg viewBox="0 0 24 24" fill="#5a0fc8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        PWA Ready
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- Dashboard -->
@@ -1862,7 +2256,7 @@
                 loadingOverlay: $('#loadingOverlay'),
                 loadingProgress: $('#loadingProgress'),
                 errorMessage: $('#errorMessage'),
-                welcomeScreen: $('#welcomeScreen'),
+                homePage: $('#homePage'),
                 dashboard: $('#dashboard'),
                 tooltip: $('#tooltip')
             };
@@ -2055,12 +2449,12 @@
                 },
                 
                 showWelcome() {
-                    elements.welcomeScreen.classList.remove('hidden');
+                    elements.homePage.classList.remove('hidden');
                     elements.dashboard.classList.remove('visible');
                 },
                 
                 showDashboard() {
-                    elements.welcomeScreen.classList.add('hidden');
+                    elements.homePage.classList.add('hidden');
                     elements.dashboard.classList.add('visible');
                 },
                 
