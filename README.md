@@ -7,8 +7,16 @@
 
 ## 🚀 [Live Demo → https://elomami1976.github.io/GitScope/](https://elomami1976.github.io/GitScope/)
 
-![GitScope Screenshot](screenshot.png)
-*Screenshot placeholder — replace with actual screenshot*
+## Screenshots
+
+![GitScope Overview](1.PNG)
+*Repository overview with language breakdown and commit activity charts*
+
+![GitScope Treemap](2.PNG)
+*Interactive file treemap visualization*
+
+![GitScope Contributors](3.PNG)
+*Contributor insights and file intelligence panels*
 
 ---
 
